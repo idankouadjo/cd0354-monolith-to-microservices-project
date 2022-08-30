@@ -1,16 +1,28 @@
-version: 2.1
-orbs:
-  docker: circleci/docker@1.7.0 
+version: 2  
 jobs:
   build:
     docker:
-    # Primary container image where all steps run.
-     - image: cimg/base:current
-    # Secondary container image on common network.
-     - image: cimg/mariadb:10.6
-       command: [mongod, --smallfiles]
-
+      # replace with your preferred image
+      - image: cimg/node:13
     steps:
-      # command will execute in an Ubuntu-based container
-      # and can access MariaDB on localhost
-      - run: sleep 5 && nc -vz localhost 3306
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: 
+              docker build -t udagram-api-feed ./udagram-api-feed
+      - run:
+          command:
+              docker tag udagram-api-feed idankouadjo/udagram-api-feed:v1
+      - run:
+          name: Push images to docker hub
+          command:
+              echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+      - run:
+          command:
+              docker push idankouadjo/udagram-api-feed:v1
+
+workflows:
+  version: 2
+  udagram-workflow:
+    jobs:
+      - build
