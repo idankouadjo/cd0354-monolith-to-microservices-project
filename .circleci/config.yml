@@ -1,28 +1,20 @@
-version: 2  
+version: 2
+orbs:
+  docker: circleci/docker@1.7.0 
 jobs:
-  build:
+  feed-job:
     docker:
       # replace with your preferred image
       - image: cimg/node:13
     steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          command: 
-              docker build -t udagram-api-feed ./udagram-api-feed
-      - run:
-          command:
-              docker tag udagram-api-feed idankouadjo/udagram-api-feed:v1
-      - run:
-          name: Push images to docker hub
-          command:
-              echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
-      - run:
-          command:
-              docker push idankouadjo/udagram-api-feed:v1
+      - docker/build:
+          image: udagram-api-feed 
+          path: ./udagram-api-feed 
+          tag: v1 
+          dockerfile: Dockerfile 
 
 workflows:
   version: 2
-  udagram-workflow:
+  example-workflow:
     jobs:
-      - build
+      - feed-job
