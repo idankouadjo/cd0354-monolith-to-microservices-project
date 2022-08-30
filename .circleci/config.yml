@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # replace with your preferred image
-      - image: circleci/node:13
+      - image: circleci/node:13.0.0
     steps:
       - checkout
       - setup_remote_docker
