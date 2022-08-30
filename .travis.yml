@@ -5,6 +5,10 @@ node_js:
 services:
   - docker
 
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
 script:
   # Build
   - docker build -t udagram-api-feed ./udagram-api-feed
