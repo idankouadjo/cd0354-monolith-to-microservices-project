@@ -5,11 +5,10 @@ jobs:
   build:
     docker:
       # replace with your preferred image
-      - image: circleci/node:13
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
+      - image: cimg/node:13
     steps:
+      - checkout
+      - setup_remote_docker
       - run:
           command: 
               docker build -t udagram-api-feed ./udagram-api-feed
