@@ -24,6 +24,7 @@ jobs:
               docker push idankouadjo/udagram-api-feed:v1
 
 workflows:
+  version: 2
   udagram-workflow:
     jobs:
       - build
