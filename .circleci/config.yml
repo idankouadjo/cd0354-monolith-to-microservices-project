@@ -2,19 +2,15 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.7.0 
 jobs:
-  feed-job:
+  build:
     docker:
-      # replace with your preferred image
-      - image: cimg/node:13
-    steps:
-      - docker/build:
-          image: udagram-api-feed 
-          path: ./udagram-api-feed 
-          tag: v1 
-          dockerfile: Dockerfile 
+    # Primary container image where all steps run.
+     - image: cimg/base:current
+    # Secondary container image on common network.
+     - image: cimg/mariadb:10.6
+       command: [mongod, --smallfiles]
 
-workflows:
-  version: 2.1
-  example-workflow:
-    jobs:
-      - feed-job
+    steps:
+      # command will execute in an Ubuntu-based container
+      # and can access MariaDB on localhost
+      - run: sleep 5 && nc -vz localhost 3306
