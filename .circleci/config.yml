@@ -1,31 +1,56 @@
-language: node_js
-node_js:
-  - 13
+version: 2.1
+orbs:
+  docker: circleci/docker@1.7.0      
+jobs:
+  backend-feed-job:
+    docker:
+      # replace with your preferred image
+      - image: circleci/node:13
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - docker/build:
+          image: udagram-api-feed
+          path: ./udagram-api-feed
+      - docker/push:
+          image: idankouadjo/udagram-api-feed
 
-services:
-  - docker
+  backend-user-job:
+    docker:
+      - image: circleci/node:13
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - docker/build:
+          image: udagram-api-user
+          path: ./udagram-api-user
 
-# Scripts to be run such as tests
-before_script:
-  - echo "no tests"
-
-script:
-  # Build
-  - docker build -t udagram-api-feed ./udagram-api-feed
-  - docker build -t udagram-api-user ./udagram-api-user
-  - docker build -t reverseproxy ./udagram-reverseproxy
-  - docker build -t udagram-frontend ./udagram-frontend
-
-  # Tagging
-  - docker  tag udagram-api-feed idankouadjo/udagram-api-feed:v1
-  - docker  tag udagram-api-user idankouadjo/udagram-api-user:v1
-  - docker  tag reverseproxy idankouadjo/reverseproxy:v1
-  - docker  tag udagram-frontend idankouadjo/udagram-frontend:v1
-
-after_success:
-  # Push
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push idankouadjo/udagram-api-feed:v1
-  - docker push idankouadjo/udagram-api-user:v1
-  - docker push idankouadjo/reverseproxy:v1
-  - docker push idankouadjo/udagram-frontend:v1
+  reverseproxy-job:
+    docker:
+      - image: circleci/nginx:alpine
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - docker/build:
+          image: reverseproxy
+          path: ./udagram-reverseproxy
+  frontend-job:
+    docker:
+      - image: circleci/node:13
+        auth:
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
+    steps:
+      - docker/build:
+          image: udagram-frontend
+          path: ./udagram-frontend
+workflows:
+  udagram-workflow:
+    jobs:
+      - backend-feed-job
+      - backend-user-job
+      - reverseproxy-job
+      - frontend-job
