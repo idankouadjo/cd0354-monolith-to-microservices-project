@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.7.0      
 jobs:
-  backend-feed-job:
+  build:
     docker:
       # replace with your preferred image
       - image: circleci/node:13
@@ -10,47 +10,19 @@ jobs:
           username: $DOCKER_USERNAME
           password: $DOCKER_PASSWORD
     steps:
-      - docker/build:
-          image: udagram-api-feed
-          path: ./udagram-api-feed
-      - docker/push:
-          image: idankouadjo/udagram-api-feed
-
-  backend-user-job:
-    docker:
-      - image: circleci/node:13
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
-    steps:
-      - docker/build:
-          image: udagram-api-user
-          path: ./udagram-api-user
-
-  reverseproxy-job:
-    docker:
-      - image: circleci/nginx:alpine
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
-    steps:
-      - docker/build:
-          image: reverseproxy
-          path: ./udagram-reverseproxy
-  frontend-job:
-    docker:
-      - image: circleci/node:13
-        auth:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_PASSWORD
-    steps:
-      - docker/build:
-          image: udagram-frontend
-          path: ./udagram-frontend
+      - run:
+          command: 
+              docker build -t udagram-api-feed ./udagram-api-feed
+      - run:
+          command:
+              docker tag udagram-api-feed idankouadjo/udagram-api-feed:v1
+      - run:
+          name: Push images to docker hub
+          command:
+              echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+              docker push idankouadjo/udagram-api-feed:v1
+              
 workflows:
   udagram-workflow:
     jobs:
-      - backend-feed-job
-      - backend-user-job
-      - reverseproxy-job
-      - frontend-job
+      - build
