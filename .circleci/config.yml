@@ -87,10 +87,7 @@ jobs:
               echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - run:
           command:
-              docker push idankouadjo/udagram-api-feed:v1 ;
-              docker push idankouadjo/udagram-api-user:v1 ;
-              docker push idankouadjo/reverseproxy:v1 ;
-              docker push idankouadjo/udagram-frontend ;
+              docker push idankouadjo/udagram-frontend
 
 
 workflows:
