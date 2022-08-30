@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@1.7.0
 jobs:
-  build:
+  backend-feed-build:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
@@ -12,19 +12,92 @@ jobs:
       - run:
           command: 
               docker build -t udagram-api-feed ./udagram-api-feed
+
       - run:
           command:
               docker tag udagram-api-feed idankouadjo/udagram-api-feed:v1
       - run:
           name: Push images to docker hub
           command:
-              echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - run:
           command:
               docker push idankouadjo/udagram-api-feed:v1
+
+  backend-user-build:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: 
+              docker build -t udagram-api-user ./udagram-api-user
+      - run:
+          command:
+              docker tag udagram-api-user idankouadjo/udagram-api-user:v1
+      - run:
+          name: Push images to docker hub
+          command:
+              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - run:
+          command:
+              docker push idankouadjo/udagram-api-user:v1 ;
+
+  reverseproxy-build:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: 
+              docker build -t reverseproxy ./udagram-reverseproxy
+
+      - run:
+          command:
+              docker tag reverseproxy idankouadjo/reverseproxy:v1
+      - run:
+          name: Push images to docker hub
+          command:
+              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - run:
+          command:
+              docker push idankouadjo/reverseproxy:v1
+
+  frontend-build:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: 
+              docker build -t udagram-frontend ./udagram-frontend
+
+      - run:
+          command:
+              docker tag udagram-frontend idankouadjo/udagram-frontend 
+      - run:
+          name: Push images to docker hub
+          command:
+              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - run:
+          command:
+              docker push idankouadjo/udagram-api-feed:v1 ;
+              docker push idankouadjo/udagram-api-user:v1 ;
+              docker push idankouadjo/reverseproxy:v1 ;
+              docker push idankouadjo/udagram-frontend ;
+
 
 workflows:
   version: 2.1
   udagram-workflow:
     jobs:
-      - build
+      - backend-feed-build
+      - backend-user-build
+      - reverseproxy-build
+      - frontend-build
