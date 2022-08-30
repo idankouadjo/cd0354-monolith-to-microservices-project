@@ -20,8 +20,10 @@ jobs:
           name: Push images to docker hub
           command:
               echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_USERNAME" --password-stdin
+      - run:
+          command:
               docker push idankouadjo/udagram-api-feed:v1
-              
+
 workflows:
   udagram-workflow:
     jobs:
