@@ -86,3 +86,5 @@ Note that this is only for the troubleshooting purposes, such as verifying the d
   ```
 
 
+***Note: Due to issues setting up billing in Travis account, I used Circle CI to complete this part of the project and it works as expected. The Circle Ci configurations are found in the .circle directory***
+
