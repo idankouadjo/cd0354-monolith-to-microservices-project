@@ -80,7 +80,7 @@ jobs:
 
       - run:
           command:
-              docker tag udagram-frontend idankouadjo/udagram-frontend 
+              docker tag udagram-frontend idankouadjo/udagram-frontend:v2 
       - run:
           name: Push images to docker hub
           command:
