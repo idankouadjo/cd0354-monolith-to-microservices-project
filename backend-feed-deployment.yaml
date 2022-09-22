@@ -18,7 +18,7 @@ spec:
       - name: backend-feed
         image: idankouadjo/udagram-api-feed:v1
         ports:
-        - containerPort: 8081
+        - containerPort: 8080
         env:
           - name: AWS_BUCKET
             valueFrom:

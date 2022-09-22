@@ -18,7 +18,7 @@ spec:
       - name: frontend
         image: idankouadjo/udagram-frontend:latest
         ports:
-        - containerPort: 8100
+        - containerPort: 80
         env:
           - name: AWS_BUCKET
             valueFrom:
