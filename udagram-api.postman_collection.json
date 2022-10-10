@@ -37,9 +37,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v0/feed",
+							"raw": "{{ekhost}}/api/v0/feed",
 							"host": [
-								"{{host}}"
+								"{{ekhost}}"
 							],
 							"path": [
 								"api",
@@ -79,9 +79,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v0/feed/:id",
+							"raw": "{{ekhost}}/api/v0/feed/:id",
 							"host": [
-								"{{host}}"
+								"{{ekhost}}"
 							],
 							"path": [
 								"api",
@@ -210,9 +210,9 @@
 							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"fancypass\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/v0/users/auth",
+							"raw": "{{ekhost}}/api/v0/users/auth",
 							"host": [
-								"{{host}}"
+								"{{ekhost}}"
 							],
 							"path": [
 								"api",
@@ -321,9 +321,9 @@
 							"raw": "{\n\t\"email\":\"hello@gmail.com\",\n\t\"password\":\"fancypass\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/v0/users/auth/login",
+							"raw": "{{ekhost}}/api/v0/users/auth/login",
 							"host": [
-								"{{host}}"
+								"{{ekhost}}"
 							],
 							"path": [
 								"api",
@@ -609,7 +609,7 @@
 		},
 		{
 			"key": "ekhost",
-			"value": "http://a3df28bcc54734f8cba1ecb0af93ecc1-1075515560.us-west-2.elb.amazonaws.com:8080",
+			"value": "http://abcc7aee86fee4566af7d772dcffcc93-224231565.us-west-2.elb.amazonaws.com:8080",
 			"type": "default"
 		}
 	]
