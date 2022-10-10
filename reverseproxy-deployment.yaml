@@ -27,7 +27,6 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
-      restartPolicy: Always
         env:
           - name: AWS_BUCKET
             valueFrom:
@@ -74,3 +73,4 @@ spec:
               configMapKeyRef:
                 name: udagram-configmap
                 key: url
+    restartPolicy: Always
