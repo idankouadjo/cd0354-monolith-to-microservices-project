@@ -1,9 +1,9 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reverseproxy
   labels:
-    service: reverseproxy
+    app: reverseproxy
 spec:
   replicas: 2
   selector:
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        service: reverseproxy
+        app: reverseproxy
     spec:
       containers:
       - name: reverseproxy
@@ -73,4 +73,3 @@ spec:
               configMapKeyRef:
                 name: udagram-configmap
                 key: url
-    restartPolicy: Always
